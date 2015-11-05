@@ -12,24 +12,25 @@ def format_xml(xml_text):
 	return xml.dom.minidom.parseString(xml_text).toprettyxml()
 
 # mode = 0 for Selen, mode = 1 for Hakan
-def process_entry(row_num, row_contents, mode, output_dir):
+def process_entry(row_num, acc_id, text, mode, output_dir):
 	suffix = '_hakan.txt' if mode == 1 else '_selen.txt'
 
 	sys.stdout.flush()
-	sys.stdout.write("\rEntry {} ({})".format(row_num, 'Hakan' if mode == 1 else 'Selen'))
-	if os.path.exists(output_dir + '/' + row_contents[0] + suffix):
-		sys.stdout.write(" skipped")
+	if os.path.exists(output_dir + '/' + acc_id + suffix):
+		sys.stdout.write("\rEntry {} ({}) SK".format(row_num, 'Hakan' if mode == 1 else 'Selen'))
 		return
+	else:
+		sys.stdout.write("\rEntry {} ({}) IP".format(row_num, 'Hakan' if mode == 1 else 'Selen'))
 
 	try:
-		text = row_contents[1].decode('ascii', errors='ignore')
+		text = text.decode('ascii', errors='ignore')
 		if mode == 1:
 			output = client.service.performHakanBulu(text)
 		else:
 			output = client.service.performSelenBozkurt(text)
 		formatted_out = format_xml(output)
 
-		out_file = open(output_dir + '/' + row_contents[0] + suffix, 'w+')
+		out_file = open(output_dir + '/' + acc_id + suffix, 'w+')
 		out_file.write(formatted_out)
 		out_file.close()
 		return True
@@ -65,22 +66,15 @@ def process_file(filename, save_dir, start_row=None, end_row=None):
 			elif start_row and counter < start_row:
 				continue
 
-			process_entry(counter, row, 0, save_dir)
+			process_entry(counter, row[0], row[1], 0, save_dir)
 			# process_entry(counter, row, 1, output_dir)
 
 	print "\nFile processing done."
 
 #########################################################################
 
-# process_file("../data/mammo_split_by_birads/no_multi/data_birads_0.csv", "../nlp")
+process_file("../data/mammo_split_by_birads/tentative_mass_split/has_mass/birads1_mass.csv", "../nlp")
 
+# process_file("../rnn_test/rnn_out/mammo_small_default_params/temp_1.csv", 
+# 	"../rnn_test/rnn_out_nlp/mammo_small_default_params/temp_1")
 
-#########################################################################
-
-# txt = ""
-
-# output = client.service.performSelenBozkurt(txt)
-
-# f = open('output.txt', 'w+')
-# f.write(format_xml(output))
-# f.close()

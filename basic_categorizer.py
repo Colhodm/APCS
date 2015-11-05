@@ -182,7 +182,7 @@ birad_categories = [#('multi', birads_multi),
 
 #categorize_file('../data/categorized/data_mammo.csv', output_path, birad_categories)
 
-#categorize_file('../data/birads_nm_split_by_mass/has_mass/birads_4.csv', None, mass_categories, dry_run=True)
+categorize_file('../data/birads_nm_split_by_mass/has_mass/birads_5.csv', None, mass_categories, dry_run=True)
 
-categorize_file('../data/mammo_split_by_birads/no_multi/data_birads_0.csv', 
-	'../data/mammo_split_by_birads/tentative_mass_split', mass_categories)
+# categorize_file('../data/mammo_split_by_birads/no_multi/data_birads_0.csv', 
+# 	'../data/mammo_split_by_birads/tentative_mass_split', mass_categories)
