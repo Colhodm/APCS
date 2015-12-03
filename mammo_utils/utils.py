@@ -46,16 +46,17 @@ def write_file(filename, entries, quotemode=csv.QUOTE_MINIMAL):
 
 def write_groups(out_path, groups, quotemode=csv.QUOTE_MINIMAL):
     for k, v in groups.iteritems():
-        filename = out_path + '/' + k + '.csv'
+        filename = "{}/{}.csv".format(out_path, k)
         write_file(filename, v, quotemode)
 
-def random_splits(entries, splits):
+def random_split(entries, splits):
     num_entries = len(entries)
     norm = float(reduce(lambda x, y: x + y, splits))
+    random.shuffle(entries)
     start, end = 0, 0
     groups = dict()
     for i in range(len(splits)):
-        end += round(splits[i] * num_entries / norm, 0)
+        end += int(round(splits[i] * num_entries / norm, 0))
         groups[i] = entries[start : end]
         start = end
     groups[i] += entries[end : ]

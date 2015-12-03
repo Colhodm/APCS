@@ -5,7 +5,7 @@ import xml.dom.minidom
 
 url = 'http://isis-collaborator.stanford.edu:8085/NLP/WebServices/Stanford_IBIIS_NLP.asmx?WSDL'
 
-client = Client(url, timeout=300)
+client = Client(url, timeout=500)
 
 def format_xml(xml_text):
 	return xml.dom.minidom.parseString(xml_text).toprettyxml()
