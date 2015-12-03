@@ -131,10 +131,10 @@ def categorize_stanford(filename, categories, out_path=None, other_name='other',
 		return
 	entries = read_file(filename)
 	entries = map(lambda x : (x[0], x[1].lower()), entries)
-	entries = map(make_categorizer(mass_categories, other_name), entries)
+	entries = map(make_categorizer(categories, other_name), entries)
 	groups = group_by_key(entries)
 	if dry_run:
-		count_categories(groups, mass_categories, other_name)
+		count_categories(groups, categories, other_name)
 	else:
 		write_groups(out_path, groups)
 	return
