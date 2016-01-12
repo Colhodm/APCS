@@ -5,8 +5,8 @@ import random
 import xml.etree.ElementTree as ET
 
 # Returns the
-def get_nlp_result(id):
-    filename = '../nlp/' + id + '_selen.txt'
+def get_nlp_result(path, name):
+    filename = path + name + '_selen.txt'
     if os.path.isfile(filename):
         return ET.parse(filename).getroot()
     else:
