@@ -1,4 +1,4 @@
-# Contains utility functions for performing categorization
+# Contains utility functions for performing file categorization
 
 __all__ = ['get_nlp_result', 'categorize_file', 'random_select_n']
 
@@ -8,7 +8,7 @@ import sys
 import xml.etree.ElementTree as ET
 from ibiis_nlp import process_entry
 
-# Returns the
+# Parses the XML result from Selen's webservice
 def get_nlp_result(acc_id):
     filename = '../nlp/' + acc_id + '_selen.txt'
     if os.path.isfile(filename):
@@ -72,55 +72,4 @@ def categorize_file(input_file, out_path, categories, other_name='other', dry_ru
         for f in out_files:
             f.close()
         print "Categories saved to " + out_path
-
-
-# This method has not been checked to work yet.
-def random_select_n(inputs, nlp_path, mass_file_dir, no_mass_file_dir, n):
-    entries = []
-    mass_files, no_mass_files = [], []
-
-    # Generate list of all accession_ids
-    for i in range(len(inputs)):
-        fname = inputs[i]
-        idx = fname.rfind('/')
-        if not idx == -1:
-            fname = fname[idx + 1 : ]
-        mass_files.append(open(mass_file_dir + '/' + fname, 'a+'))
-        no_mass_files.append(open(no_mass_file_dir + '/' + fname, 'a+'))
-
-        with open(inputs[i], 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if not row:
-                    break
-                entries.append((row[0], row[1], i))
-
-    # Shuffle accession IDs
-    random.shuffle(entries)
-    mass_count = 0
-    tot_count = 0
-
-    print "Extracting {} masses from a total of {} entries".format(n, len(entries))
-
-    # Write results
-    for acc_id, text, src_idx in entries:
-        if mass_count >= n:
-            break
-        tot_count += 1
-
-        if process_entry(tot_count, acc_id, text, 0, nlp_path):
-            if nlp_result_has_mass(nlp_path + '/' + acc_id + '_selen.txt'):
-                mass_count += 1
-                mass_files[src_idx].write('\"{}\",\"{}\"\n'.format(acc_id, text.replace('\"', '\"\"')))
-            else:
-                no_mass_files[src_idx].write('\"{}\",\"{}\"\n'.format(acc_id, text.replace('\"', '\"\"')))
-        else:
-            pass
-
-    for f in mass_files:
-        f.close()
-    for f in no_mass_files:
-        f.close()
-
-    print "Masses: {} / {} entries".format(mass_count, tot_count)
 
