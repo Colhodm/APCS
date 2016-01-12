@@ -6,7 +6,7 @@ import sys
 import random
 import xml.etree.ElementTree as ET
 
-# Returns the
+# Returns the result of the IBIIS webservice as .
 def get_nlp_result(id):
     filename = '../nlp/' + id + '_selen.txt'
     if os.path.isfile(filename):
