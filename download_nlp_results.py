@@ -1,8 +1,11 @@
+# Sends the entries of an entire file to the IBIIS NLP service. The code will skip files that already have
+# been processed.
 
 import csv
 import os
 from mammo_utils.ibiis_nlp import process_entry
 
+# The following four functions extract the accession ID and data from the Stanford and MCW datasets.
 def get_stanford_name(row):
     return row[0]
 
@@ -41,7 +44,6 @@ def process_file(filename, save_dir, start_row=None, end_row=None, name_func=get
                 continue
 
             process_entry(counter, name_func(row), data_func(row), 0, save_dir)
-            # process_entry(counter, row, 1, output_dir)
 
     print "\nFile processing done."
 

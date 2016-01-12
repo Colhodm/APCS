@@ -1,3 +1,5 @@
+# Script to download Stanford mammo images from the web repository.
+
 import urllib, urllib2, cookielib
 from bs4 import BeautifulSoup
 import os, shutil, zipfile
