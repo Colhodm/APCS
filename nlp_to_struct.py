@@ -9,6 +9,8 @@
 
 from mammo_utils.utils import *
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 total_types = { 'BreastDensity' : set(), 'MassesMargins' : set(), 'MassesShape' : set(), 'MassesDensity' : set() }
@@ -108,10 +110,12 @@ def extract_birads(text):
 
 # Currently just gets latest entry if fields repeat
 def extract_fields(types, name):
-    xml = get_nlp_result('../mcw_nlp/', name)
+#    xml = get_nlp_result_arjun('../mcw_nlp/', name)
+    xml = get_nlp_result_arjun('../mcw_nlp/', 1)
     if xml is None:
+        print "No file found"
         return None
-
+    print "file found"
     # Get breast density
     entry = EntryData()
     if xml.attrib['breastDensity'] is not None:
@@ -167,6 +171,7 @@ def process_entry(entry):
     counter += 1
     if counter % 100 == 0:
         print counter
+    print entry[counter] 
     extracted = extract_fields(total_types, entry[0])
     if extracted is not None:
         breast_density = entry[2]
@@ -200,11 +205,11 @@ def generate_output(entry):
         return (out.get_breast_density(), out.get_mass_margin(), out.get_mass_shape(), out.get_mass_density(), out.birads_cat, result)
 
 
-input_name = '../mcw/train_test_data/train_0.csv'
+input_name =('/home/arjun/mammo_reports/mcw_nlp/1_selen.txt')
 results = read_file(input_name)
-#map(process_entry, results)
+map(process_entry, results)
 outputs = filter(lambda x: x is not None, map(generate_output, results))
-write_file('../mcw/train_test_data/train_0_parsed.csv', outputs)
+write_file('../env/practicedata/train_0_parsed.csv', outputs)
 
 # plt.hist(mass_smalls, bins=np.arange(min(mass_smalls), max(mass_smalls) + 1, 1), facecolor='red', alpha=0.5)
 # plt.hist(mass_large, bins=np.arange(min(mass_large), max(mass_large) + 1, 1), facecolor='blue', alpha=0.5)
