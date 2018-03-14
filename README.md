@@ -9,3 +9,6 @@ Arjun's Projects
 #Skullstripper based of the Python Library to strip skull from MRI images of Brain
 
 ##Python Web Scrapper to get Stats off of Football-Reference to compile a list of all NFL players who have played in the probowl.
+
+
+##Also an SVM script for utilizing gridsearch with SVM's and some basic machine learning manipulations with them
